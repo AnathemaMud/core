@@ -10,4 +10,5 @@ module.exports = {
   SKILL: Symbol("SKILL"),
   CHANNEL: Symbol("CHANNEL"),
   MOVEMENT: Symbol("MOVEMENT"),
+  SOCIAL: Symbol("SOCIAL"),
 };

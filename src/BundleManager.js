@@ -15,6 +15,7 @@ const fs = require('fs'),
     Skill = require('./Skill'),
     SkillType = require('./SkillType'),
     Helpfile = require('./Helpfile'),
+    Social = require('./Social'),
     Logger = require('./Logger')
 ;
 
@@ -108,6 +109,7 @@ class BundleManager {
       { path: 'server-events/', fn: 'loadServerEvents' },
       { path: 'player-events.js', fn: 'loadPlayerEvents' },
       { path: 'skills/', fn: 'loadSkills' },
+      { path: 'socials/', fn: 'loadSocials' },
     ];
 
     Logger.verbose(`LOAD: BUNDLE [\x1B[1;33m${bundle}\x1B[0m] START`);
@@ -634,6 +636,52 @@ class BundleManager {
     }
 
     Logger.verbose(`\tENDLOAD: Server Events...`);
+  }
+
+    /**
+   * @param {string} bundle
+   * @param {string} socialDir
+   */
+  async loadSocials(bundle) {
+    Logger.verbose(`\tLOAD: Social...`);
+    const loader = this.loaderRegistry.get('socials');
+    console.log('bundle', bundle);
+    console.log('loader', loader);
+
+    loader.setBundle(bundle);
+
+    if (!await loader.hasData()) {
+      return;
+    }
+
+    const records = await loader.fetchAll();
+    console.log('records', records);
+
+    for (const socialName in records) {
+      try {
+        const social = new Social(
+          bundle,
+          socialName,
+          records[socialName]
+        );
+
+        const socialCommand = new Command(
+          bundle,
+          socialName//,
+          // cmdImport,
+          // commandPath
+        );
+        socialCommand.type = CommandType.SOCIAL;
+
+        this.state.SocialManager.add(social);
+        this.state.CommandManager.add(socialCommand);
+      } catch (e) {
+        Logger.warn(`\t\t${e.message}`);
+        continue;
+      }
+    }
+
+    Logger.verbose(`\tENDLOAD: Social...`);
   }
 
   /**
