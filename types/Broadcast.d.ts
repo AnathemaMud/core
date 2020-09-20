@@ -80,11 +80,11 @@ export declare class Broadcast {
      * Center a string in the middle of a given width
      * @param {number} width
      * @param {string} message
-     * @param {string} color
+     * @param {?string} color name of color
      * @param {?string} fillChar Character to pad with, defaults to ' '
      * @return {string}
      */
-    static center(width: number, message: string, color: string, fillChar: string): string;
+    static center(width: number, message: string, color?: string, fillChar?: string): string;
 
     /**
      * Render a line of a specific width/color

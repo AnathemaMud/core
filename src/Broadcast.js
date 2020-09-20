@@ -184,7 +184,7 @@ class Broadcast {
    * @param {?string} fillChar Character to pad with, defaults to ' '
    * @return {string}
    */
-  static center(width, message, color, fillChar = " ") {
+  static center(width, message, color = "", fillChar = " ") {
     const padWidth = width / 2 - message.length / 2;
     let openColor = '';
     let closeColor = '';
